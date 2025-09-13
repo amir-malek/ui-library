@@ -11,7 +11,7 @@ const Popover = PopoverPrimitive.Root
 const PopoverTrigger = PopoverPrimitive.Trigger
 
 const PopoverContent = React.forwardRef<
-  React.ElementRef<typeof PopoverPrimitive.Content>,
+  React.ComponentRef<typeof PopoverPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>
 >(({ className, align = 'center', sideOffset = 4, ...props }, ref) => (
   <PopoverPrimitive.Portal>
@@ -20,7 +20,7 @@ const PopoverContent = React.forwardRef<
       align={align}
       sideOffset={sideOffset}
       className={cn(
-        'z-50 w-72 rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
+        'z-50 w-72 rounded-lg border bg-popover p-4 text-popover-foreground shadow-elevation-lg outline-none transition-all duration-slow ease-decelerated data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
         className
       )}
       {...props}
@@ -69,47 +69,60 @@ const DatePicker: React.FC<DatePickerProps> = ({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-auto p-0" align="start">
-        <DayPicker
-          mode="single"
-          selected={value}
-          onSelect={(date) => {
-            onChange?.(date)
-            setOpen(false)
-          }}
-          disabled={[
-            ...(minDate ? [{ before: minDate }] : []),
-            ...(maxDate ? [{ after: maxDate }] : []),
-          ]}
-          initialFocus
-          classNames={{
-            months: 'flex flex-col sm:flex-row space-y-4 sm:space-x-4 sm:space-y-0',
-            month: 'space-y-4',
-            caption: 'flex justify-center pt-1 relative items-center',
-            caption_label: 'text-sm font-medium',
-            nav: 'space-x-1 flex items-center',
-            nav_button:
-              'h-7 w-7 bg-transparent p-0 opacity-50 hover:opacity-100 inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground',
-            nav_button_previous: 'absolute left-1',
-            nav_button_next: 'absolute right-1',
-            table: 'w-full border-collapse space-y-1',
-            head_row: 'flex',
-            head_cell:
-              'text-muted-foreground rounded-md w-9 font-normal text-[0.8rem]',
-            row: 'flex w-full mt-2',
-            cell: 'h-9 w-9 text-center text-sm p-0 relative [&:has([aria-selected].day-range-end)]:rounded-r-md [&:has([aria-selected].day-outside)]:bg-accent/50 [&:has([aria-selected])]:bg-accent first:[&:has([aria-selected])]:rounded-l-md last:[&:has([aria-selected])]:rounded-r-md focus-within:relative focus-within:z-20',
-            day: 'h-9 w-9 p-0 font-normal aria-selected:opacity-100 hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground rounded-md transition-colors inline-flex items-center justify-center text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
-            day_range_end: 'day-range-end',
-            day_selected:
-              'bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground focus:bg-primary focus:text-primary-foreground',
-            day_today: 'bg-accent text-accent-foreground',
-            day_outside:
-              'day-outside text-muted-foreground opacity-50 aria-selected:bg-accent/50 aria-selected:text-muted-foreground aria-selected:opacity-30',
-            day_disabled: 'text-muted-foreground opacity-50',
-            day_range_middle:
-              'aria-selected:bg-accent aria-selected:text-accent-foreground',
-            day_hidden: 'invisible',
-          }}
-        />
+        <div className="p-3">
+          <DayPicker
+            mode="single"
+            selected={value}
+            onSelect={(date) => {
+              onChange?.(date)
+              setOpen(false)
+            }}
+            disabled={[
+              ...(minDate ? [{ before: minDate }] : []),
+              ...(maxDate ? [{ after: maxDate }] : []),
+            ]}
+            className="rdp-root"
+            classNames={{
+              months: "rdp-months",
+              month_caption: "rdp-month_caption",
+              nav: "rdp-nav",
+              button_previous: "rdp-button_previous",
+              button_next: "rdp-button_next",
+              chevron: "rdp-chevron",
+              weekdays: "rdp-weekdays",
+              weekday: "rdp-weekday",
+              month_grid: "rdp-month_grid",
+              week: "rdp-week",
+              day: "rdp-day",
+              day_button: "rdp-day_button",
+              day_today: "rdp-day_today",
+              day_selected: "rdp-day_selected",
+              day_outside: "rdp-day_outside",
+              day_disabled: "rdp-day_disabled",
+              day_range_start: "rdp-day_range_start",
+              day_range_end: "rdp-day_range_end",
+              day_range_middle: "rdp-day_range_middle",
+            }}
+            components={{
+              Chevron: ({ ...props }) => (
+                <svg
+                  className="rdp-chevron"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2"
+                  stroke="currentColor"
+                  {...props}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d={props.orientation === 'left' ? 'M15 19l-7-7 7-7' : 'M9 5l7 7-7 7'}
+                  />
+                </svg>
+              ),
+            }}
+          />
+        </div>
       </PopoverContent>
     </Popover>
   )

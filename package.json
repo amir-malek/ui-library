@@ -15,11 +15,15 @@
     "./styles": "./dist/style.css"
   },
   "files": [
-    "dist"
+    "dist",
+    "LICENSE",
+    "README.md"
   ],
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "clean": "rm -rf dist",
+    "build:lib": "tsc -p tsconfig.lib.json && vite build --mode production",
+    "build": "npm run clean && npm run build:lib",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -67,13 +71,5 @@
     "design-system"
   ],
   "author": "Fancy UI Team",
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/fancy-ui-lib/fancy-ui"
-  },
-  "homepage": "https://github.com/fancy-ui-lib/fancy-ui#readme",
-  "bugs": {
-    "url": "https://github.com/fancy-ui-lib/fancy-ui/issues"
-  }
+  "license": "MIT"
 }

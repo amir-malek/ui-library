@@ -22,6 +22,7 @@ export default defineConfig({
         return `${name}.${format}.js`
       },
     },
+    assetsDir: '',
     rollupOptions: {
       external: [
         'react',
@@ -36,39 +37,14 @@ export default defineConfig({
         'date-fns',
         'react-day-picker',
       ],
-      output: [
-        {
-          format: 'es',
-          entryFileNames: (chunkInfo) => {
-            if (chunkInfo.name === 'styles') return 'styles.es.js'
-            return 'index.es.js'
-          },
-          assetFileNames: (assetInfo) => {
-            if (assetInfo.name && assetInfo.name.endsWith('.css')) {
-              return 'style.css'
-            }
-            return assetInfo.name || '[name].[ext]'
-          },
+      output: {
+        assetFileNames: 'style.css',
+        globals: {
+          react: 'React',
+          'react-dom': 'ReactDOM',
+          'react/jsx-runtime': 'react/jsx-runtime',
         },
-        {
-          format: 'cjs',
-          entryFileNames: (chunkInfo) => {
-            if (chunkInfo.name === 'styles') return 'styles.cjs.js'
-            return 'index.cjs.js'
-          },
-          assetFileNames: (assetInfo) => {
-            if (assetInfo.name && assetInfo.name.endsWith('.css')) {
-              return 'style.css'
-            }
-            return assetInfo.name || '[name].[ext]'
-          },
-          globals: {
-            react: 'React',
-            'react-dom': 'ReactDOM',
-            'react/jsx-runtime': 'react/jsx-runtime',
-          },
-        },
-      ],
+      },
     },
   },
   css: {

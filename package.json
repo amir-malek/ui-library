@@ -1,5 +1,5 @@
 {
-  "name": "@fancy-ui-lib/fancy-ui",
+  "name": "fancy-ui-lib",
   "version": "1.0.0",
   "description": "A modern React component library with TypeScript, TailwindCSS, and Radix Primitives",
   "type": "module",
